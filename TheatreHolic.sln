@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheatreHolic.Data", "TheatreHolic.Data\TheatreHolic.Data.csproj", "{914810A9-0C55-454B-99A3-FEBF71F6D4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheatreHolic.CLI", "TheatreHolic.CLI\TheatreHolic.CLI.csproj", "{09873A83-58A5-4289-9278-764AF64ED1D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{914810A9-0C55-454B-99A3-FEBF71F6D4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914810A9-0C55-454B-99A3-FEBF71F6D4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914810A9-0C55-454B-99A3-FEBF71F6D4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914810A9-0C55-454B-99A3-FEBF71F6D4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09873A83-58A5-4289-9278-764AF64ED1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09873A83-58A5-4289-9278-764AF64ED1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09873A83-58A5-4289-9278-764AF64ED1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09873A83-58A5-4289-9278-764AF64ED1D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
