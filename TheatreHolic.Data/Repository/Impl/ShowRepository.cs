@@ -31,8 +31,12 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
     public IEnumerable<Show> FilterWithData(Func<Show, bool> filter, int offset, int amount)
     {
         var q = _context.Set<Show>()
-            .Where(s => filter(s))
-            .Skip(offset);
+            .Where(s => filter(s));
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
 
         if (amount > 0)
         {
@@ -46,9 +50,21 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
     }
 
     public IEnumerable<Show> GetPageWithData(int offset, int amount)
+
     {
-        return _context.Set<Show>()
-            .Skip(offset).Take(amount)
+        var q = _context.Set<Show>().AsQueryable();
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
+
+        if (amount > 0)
+        {
+            q = q.Take(amount);
+        }
+
+        return q
             .Include(s => s.Author)
             .Include(s => s.Genres)
             .Include(s => s.Tickets)

@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TheatreHolic.Data.Models;
+namespace TheatreHolic.Domain.Models;
 
 public class Ticket
 {
@@ -14,7 +12,15 @@ public class Ticket
     
     public TicketState State { get; set; }
     
-    [ForeignKey("ShowId")]
     public Show? Show { get; set; }
     public int ShowId { get; set; }
+    
+    public Ticket() {}
+
+    public Ticket(double price, int row, int seat)
+    {
+        Price = price;
+        Row = row;
+        Seat = seat;
+    }
 }

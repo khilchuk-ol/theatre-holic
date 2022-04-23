@@ -27,8 +27,12 @@ public class TicketRepository : Repository<int, Ticket>, ITicketRepository
     public IEnumerable<Ticket> FilterWithData(Func<Ticket, bool> filter, int offset, int amount)
     {
         var q = _context.Set<Ticket>()
-            .Where(t => filter(t))
-            .Skip(offset);
+            .Where(t => filter(t));
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
 
         if (amount > 0)
         {
@@ -41,8 +45,19 @@ public class TicketRepository : Repository<int, Ticket>, ITicketRepository
 
     public IEnumerable<Ticket> GetPageWithData(int offset, int amount)
     {
-        return _context.Set<Ticket>()
-            .Skip(offset).Take(amount)
+        var q = _context.Set<Ticket>().AsQueryable();
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
+
+        if (amount > 0)
+        {
+            q = q.Take(amount);
+        }
+
+        return q
             .Include(t => t.Show)
             .ToList();
     }

@@ -23,7 +23,13 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
 
     public IEnumerable<TEntity> Filter(Func<TEntity, bool> filter, int offset = 0, int amount = 0)
     {
-        var q = _context.Set<TEntity>().Where(e => filter(e)).Skip(offset);
+        var q = _context.Set<TEntity>().Where(e => filter(e));
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
+        
         if (amount > 0)
         {
             q = q.Take(amount);
@@ -39,12 +45,31 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
 
     public IEnumerable<TEntity> GetPage(int offset, int amount)
     {
-        return _context.Set<TEntity>().Skip(offset).Take(amount).ToList();
+        var q = _context.Set<TEntity>().AsQueryable();
+
+        if (offset > 0)
+        {
+            q = q.Skip(offset);
+        }
+        
+        if (amount > 0)
+        {
+            q = q.Take(amount);
+        }
+
+        return q.ToList();
     }
 
-    public void Remove(TEntity item)
+    public void Remove(TIdentity id)
     {
-        _context.Set<TEntity>().Remove(item);
+        var item = _context.Set<TEntity>().Find(id);
+        if (item == null)
+        {
+            return;
+        }
+        
+        _context.Entry(item).State = EntityState.Deleted;
+        _context.SaveChanges();
     }
 
     public void Update(TEntity item)

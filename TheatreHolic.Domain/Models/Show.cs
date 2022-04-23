@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TheatreHolic.Data.Models;
+namespace TheatreHolic.Domain.Models;
 
 public class Show
 {
@@ -8,8 +6,6 @@ public class Show
 
     public string Title { get; set; } = "";
     
-    public int AuthorId { get; set; }
-    [ForeignKey("AuthorId")]
     public Author? Author { get; set; }
     
     public List<Genre>? Genres { get; set; }
@@ -17,4 +13,12 @@ public class Show
     public List<Ticket>? Tickets { get; set; }
     
     public DateTime Date { get; set; }
+    
+    public Show() {}
+
+    public Show(string title, DateTime dt)
+    {
+        Title = title;
+        Date = dt;
+    }
 }
