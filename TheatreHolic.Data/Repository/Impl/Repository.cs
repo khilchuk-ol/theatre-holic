@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace TheatreHolic.Data.Repository.Impl;
@@ -21,9 +22,9 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
         return _context.Set<TEntity>().Find(id);
     }
 
-    public IEnumerable<TEntity> Filter(Func<TEntity, bool> filter, int offset = 0, int amount = 0)
+    public IEnumerable<TEntity> Filter(Expression<Func<TEntity, bool>> filter, int offset = 0, int amount = 0)
     {
-        var q = _context.Set<TEntity>().Where(e => filter(e));
+        var q = _context.Set<TEntity>().Where(filter);
 
         if (offset > 0)
         {

@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using TheatreHolic.CLI.Presentation;
 using TheatreHolic.Data;
 using TheatreHolic.Data.Repository;
 using TheatreHolic.Data.Repository.Impl;
@@ -13,7 +15,9 @@ public class Startup
 {
     public static void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<TheatreHolicContext>();
+        // services.AddDbContext<TheatreHolicContext>();
+
+        services.AddScoped<DbContext, TheatreHolicContext>();
 
         services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IGenreRepository, GenreRepository>();
@@ -22,6 +26,10 @@ public class Startup
 
         services.AddScoped<ITicketService, TicketService>();
         services.AddScoped<IShowService, ShowService>();
+        services.AddScoped<IAuthorService, AuthorService>();
+        services.AddScoped<IGenreService, GenreService>();
+        
+        services.AddScoped<IShowable, Presentation.CLI>();
 
         var mapperConfig = new MapperConfiguration(mc =>
         {

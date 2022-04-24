@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TheatreHolic.Data.Models;
 
@@ -24,10 +25,10 @@ public class TicketRepository : Repository<int, Ticket>, ITicketRepository
             .FirstOrDefault();
     }
 
-    public IEnumerable<Ticket> FilterWithData(Func<Ticket, bool> filter, int offset, int amount)
+    public IEnumerable<Ticket> FilterWithData(Expression<Func<Ticket, bool>> filter, int offset, int amount)
     {
         var q = _context.Set<Ticket>()
-            .Where(t => filter(t));
+            .Where(filter);
 
         if (offset > 0)
         {

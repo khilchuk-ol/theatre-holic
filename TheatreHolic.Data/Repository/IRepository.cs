@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace TheatreHolic.Data.Repository;
 
 public interface IRepository<TIdentity, TEntity>
@@ -7,6 +9,6 @@ public interface IRepository<TIdentity, TEntity>
     void Remove(TIdentity id);
     IEnumerable<TEntity> FindAll();
     TEntity? Find(TIdentity id);
-    IEnumerable<TEntity> Filter(Func<TEntity, bool> filter, int offset, int amount);
+    IEnumerable<TEntity> Filter(Expression<Func<TEntity, bool>> filter, int offset, int amount);
     IEnumerable<TEntity> GetPage(int offset, int amount);
 }

@@ -1,7 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TheatreHolic.CLI.Presentation;
+using TheatreHolic.Data;
+using TheatreHolic.Data.Repository;
+using TheatreHolic.Data.Repository.Impl;
+using TheatreHolic.Domain.Mapping;
 using TheatreHolic.Domain.Services;
+using TheatreHolic.Domain.Services.Impl;
 
 namespace TheatreHolic.CLI;
 
@@ -17,9 +24,9 @@ public class Program
 
             try
             {
-                var showSvc = services.GetRequiredService<IShowService>();
-                var ticketSvc = services.GetRequiredService<ITicketService>();
+                var cli = services.GetRequiredService<IShowable>();
                 
+                cli.Show();
             }
             catch (Exception ex)
             {
