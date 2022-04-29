@@ -19,29 +19,27 @@ public class GenreService : IGenreService
     {
         if (String.IsNullOrEmpty(name))
         {
-            return _repository.GetPage(offset, amount).Select(
-                g => _mapper.Map<Data.Models.Genre, Genre>(g));
+            return _repository.GetPage(offset, amount)
+                .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
+                .ToList();
         }
 
-        return _repository.Filter(
-            g => g.Name.Contains(name.Trim()),
-            offset,
-            amount).Select(
-            g => _mapper.Map<Data.Models.Genre, Genre>(g));
+        return _repository.Filter(g => g.Name.Contains(name.Trim()), offset, amount)
+            .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
+            .ToList();
     }
 
     public IEnumerable<Genre> FindGenresByIds(List<int> ids, int offset, int amount)
     {
         if (!ids.Any())
         {
-            return _repository.GetPage(offset, amount).Select(
-                g => _mapper.Map<Data.Models.Genre, Genre>(g));
+            return _repository.GetPage(offset, amount)
+                .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
+                .ToList();
         }
 
-        return _repository.Filter(
-            g => ids.Contains(g.Id),
-            offset,
-            amount).Select(
-            g => _mapper.Map<Data.Models.Genre, Genre>(g));
+        return _repository.Filter(g => ids.Contains(g.Id), offset, amount)
+            .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
+            .ToList();
     }
 }

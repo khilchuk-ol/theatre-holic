@@ -37,18 +37,21 @@ public class ShowService : IShowService
         if (opts == null)
         {
             return _repository.GetPage(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         var filter = prepareFilter(opts);
         if (filter == null)
         {
             return _repository.GetPage(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         return _repository.Filter(filter, offset, amount)
-            .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+            .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+            .ToList();
     }
 
     public IEnumerable<Show> FindShowsWithInfo(SearchShowsOptions? opts, int offset, int amount)
@@ -56,18 +59,21 @@ public class ShowService : IShowService
         if (opts == null)
         {
             return _repository.GetPageWithData(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         var filter = prepareFilter(opts);
         if (filter == null)
         {
             return _repository.GetPage(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         return _repository.FilterWithData(filter, offset, amount)
-            .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+            .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+            .ToList();
     }
 
     public IEnumerable<Show> GetShowsByIds(List<int> ids, int offset, int amount)
@@ -75,14 +81,16 @@ public class ShowService : IShowService
         if (!ids.Any())
         {
             return _repository.GetPage(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         return _repository.Filter(
                 s => ids.Contains(s.Id),
                 offset,
                 amount)
-            .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+            .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+            .ToList();
     }
 
     public IEnumerable<Show> GetShowsByIdsWithInfo(List<int> ids, int offset, int amount)
@@ -90,14 +98,16 @@ public class ShowService : IShowService
         if (!ids.Any())
         {
             return _repository.GetPageWithData(offset, amount)
-                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+                .ToList();
         }
 
         return _repository.FilterWithData(
                 s => ids.Contains(s.Id),
                 offset,
                 amount)
-            .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+            .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
+            .ToList();
     }
 
     private Expression<Func<Data.Models.Show, bool>>? prepareFilter(SearchShowsOptions opts)

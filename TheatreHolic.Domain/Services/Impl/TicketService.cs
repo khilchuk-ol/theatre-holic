@@ -66,8 +66,8 @@ public class TicketService : ITicketService
 
     public IEnumerable<Ticket> GetAvailableTickets(int showId)
     {
-        return _repository.Filter(
-                t => t.State == TicketState.Available && t.ShowId == showId, -1, -1)
-            .Select(t => _mapper.Map<Data.Models.Ticket, Ticket>(t));
+        return _repository.Filter(t => t.State == TicketState.Available && t.ShowId == showId, -1, -1)
+            .Select(t => _mapper.Map<Data.Models.Ticket, Ticket>(t))
+            .ToList();
     }
 }

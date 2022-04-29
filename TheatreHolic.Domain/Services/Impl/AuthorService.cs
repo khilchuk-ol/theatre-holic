@@ -20,29 +20,27 @@ public class AuthorService : IAuthorService
     {
         if (String.IsNullOrEmpty(name))
         {
-            return _repository.GetPage(offset, amount).Select(
-                a => _mapper.Map<Data.Models.Author, Author>(a));
+            return _repository.GetPage(offset, amount)
+                .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
+                .ToList();
         }
 
-        return _repository.Filter(
-            a => a.Name.Contains(name.Trim()),
-            offset,
-            amount).Select(
-            a => _mapper.Map<Data.Models.Author, Author>(a));
+        return _repository.Filter(a => a.Name.Contains(name.Trim()), offset, amount)
+            .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
+            .ToList();
     }
 
     public IEnumerable<Author> FindAuthorsByIds(List<int> ids, int offset, int amount)
     {
         if (!ids.Any())
         {
-            return _repository.GetPage(offset, amount).Select(
-                a => _mapper.Map<Data.Models.Author, Author>(a));
+            return _repository.GetPage(offset, amount)
+                .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
+                .ToList();
         }
 
-        return _repository.Filter(
-            a => ids.Contains(a.Id),
-            offset,
-            amount).Select(
-            a => _mapper.Map<Data.Models.Author, Author>(a));
+        return _repository.Filter(a => ids.Contains(a.Id), offset, amount)
+            .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
+            .ToList();
     }
 }

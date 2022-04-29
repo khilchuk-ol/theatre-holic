@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TheatreHolic.Data.Models;
 
-public class Show
+public class Show : IEquatable<Show>
 {
     public int Id { get; set; }
 
@@ -19,4 +19,17 @@ public class Show
     public List<Ticket>? Tickets { get; set; }
     
     public DateTime Date { get; set; }
+    
+    public bool Equals(Show? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+
+        return Title == other.Title &&
+               Date == other.Date &&
+               GenreId == other.GenreId &&
+               AuthorId == other.AuthorId;
+    }
 }
