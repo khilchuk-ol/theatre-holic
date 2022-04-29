@@ -15,6 +15,7 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
     public void Create(TEntity item)
     {
         _context.Set<TEntity>().Add(item);
+        _context.SaveChanges();
     }
 
     public virtual TEntity? Find(TIdentity id)

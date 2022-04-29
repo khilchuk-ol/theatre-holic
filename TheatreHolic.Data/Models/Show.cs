@@ -12,7 +12,9 @@ public class Show
     [ForeignKey("AuthorId")]
     public Author? Author { get; set; }
     
-    public List<Genre>? Genres { get; set; }
+    public int GenreId { get; set; }
+    [ForeignKey("GenreId")]
+    public Genre? Genre { get; set; }
     
     public List<Ticket>? Tickets { get; set; }
     

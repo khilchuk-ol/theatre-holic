@@ -32,9 +32,5 @@ public class TheatreHolicContext : DbContext
             .HasOne(_ => _.Show)
             .WithMany(_ => _.Tickets)
             .HasForeignKey(_ => _.ShowId);
-
-        modelBuilder.Entity<Show>()
-            .HasMany(_ => _.Genres)
-            .WithMany("_shows");
     }
 }

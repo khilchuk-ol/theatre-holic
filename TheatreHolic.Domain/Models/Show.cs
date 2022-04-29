@@ -8,7 +8,7 @@ public class Show
     
     public Author? Author { get; set; }
     
-    public List<Genre>? Genres { get; set; }
+    public Genre? Genre { get; set; }
     
     public List<Ticket>? Tickets { get; set; }
     

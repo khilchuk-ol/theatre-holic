@@ -8,15 +8,15 @@ namespace TheatreHolic.Domain.Services.Impl;
 
 public class ShowService : IShowService
 {
-    private IShowRepository _repository;
-    private IMapper _mapper;
+    private readonly IShowRepository _repository;
+    private readonly IMapper _mapper;
 
     public ShowService(IShowRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
-    
+
     public void CreateShow(Show item)
     {
         _repository.Create(_mapper.Map<Show, Data.Models.Show>(item));
@@ -40,7 +40,12 @@ public class ShowService : IShowService
                 .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
         }
 
-        var filter = prepareFilterExpr(opts);
+        var filter = prepareFilter(opts);
+        if (filter == null)
+        {
+            return _repository.GetPage(offset, amount)
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+        }
 
         return _repository.Filter(filter, offset, amount)
             .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
@@ -54,7 +59,12 @@ public class ShowService : IShowService
                 .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
         }
 
-        var filter = prepareFilterExpr(opts);
+        var filter = prepareFilter(opts);
+        if (filter == null)
+        {
+            return _repository.GetPage(offset, amount)
+                .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
+        }
 
         return _repository.FilterWithData(filter, offset, amount)
             .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
@@ -69,9 +79,9 @@ public class ShowService : IShowService
         }
 
         return _repository.Filter(
-            s => ids.Contains(s.Id),
-            offset,
-            amount)
+                s => ids.Contains(s.Id),
+                offset,
+                amount)
             .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
     }
 
@@ -84,57 +94,80 @@ public class ShowService : IShowService
         }
 
         return _repository.FilterWithData(
-            s => ids.Contains(s.Id),
-            offset,
-            amount)
+                s => ids.Contains(s.Id),
+                offset,
+                amount)
             .Select(s => _mapper.Map<Data.Models.Show, Show>(s));
     }
-    
-    private Expression<Func<Data.Models.Show, bool>> prepareFilterExpr(SearchShowsOptions opts)
+
+    private Expression<Func<Data.Models.Show, bool>>? prepareFilter(SearchShowsOptions opts)
     {
-        Expression<Func<Data.Models.Show, bool>> filter = s => true;
-        Expression<Func<Data.Models.Show, bool>> temp;
+        var p = Expression.Parameter(typeof(Data.Models.Show), "p");
+
+        List<Expression> bodies = new List<Expression>();
 
         if (!String.IsNullOrEmpty(opts.Title?.Trim()))
         {
-            temp = s => s.Title.Contains(opts.Title.Trim());
-            var body = Expression.AndAlso(filter.Body, temp.Body);
-            
-            filter = Expression.Lambda<Func<Data.Models.Show,bool>>(body, filter.Parameters[0]);
+            opts.Title = opts.Title.Trim();
+
+            var body = Expression.Call(
+                Expression.Property(p, typeof(Data.Models.Show), nameof(Data.Models.Show.Title)),
+                typeof(string).GetMethod("Contains", new[] { typeof(string) }),
+                Expression.Constant(opts.Title)
+            );
+
+            bodies.Add(body);
         }
-        
+
         if (opts.MinDateTime != null && opts.MinDateTime >= DateTime.Now)
         {
-            temp = s => s.Date >= opts.MinDateTime;
-            var body = Expression.AndAlso(filter.Body, temp.Body);
-            
-            filter = Expression.Lambda<Func<Data.Models.Show,bool>>(body, filter.Parameters[0]);
+            var body = Expression.GreaterThanOrEqual(
+                Expression.Property(p, typeof(Data.Models.Show), nameof(Data.Models.Show.Date)),
+                Expression.Constant(opts.MinDateTime)
+            );
+
+            bodies.Add(body);
         }
         
         if (opts.MaxDateTime != null && opts.MaxDateTime >= DateTime.Now)
         {
-            temp = s => s.Date <= opts.MaxDateTime;
-            var body = Expression.AndAlso(filter.Body, temp.Body);
-            
-            filter = Expression.Lambda<Func<Data.Models.Show,bool>>(body, filter.Parameters[0]);
+            var body = Expression.LessThanOrEqual(
+                Expression.Property(p, typeof(Data.Models.Show), nameof(Data.Models.Show.Date)),
+                Expression.Constant(opts.MaxDateTime)
+            );
+
+            bodies.Add(body);
         }
         
         if (opts.AuthorIds != null && opts.AuthorIds.Count > 0)
         {
-            temp = s => opts.AuthorIds.Contains(s.AuthorId);
-            var body = Expression.AndAlso(filter.Body, temp.Body);
-            
-            filter = Expression.Lambda<Func<Data.Models.Show,bool>>(body, filter.Parameters[0]);
+            var body = Expression.Call(
+                Expression.Constant(opts.AuthorIds),
+                typeof(List<int>).GetMethod("Contains", new[] { typeof(int) }),
+                Expression.Property(p, typeof(Data.Models.Show), nameof(Data.Models.Show.AuthorId))
+            );
+
+            bodies.Add(body);
         }
         
         if (opts.GenreIds != null && opts.GenreIds.Count > 0)
         {
-            temp = s => s.Genres != null && s.Genres.Select(g => g.Id).Intersect(opts.GenreIds).Any();
-            var body = Expression.AndAlso(filter.Body, temp.Body);
-            
-            filter = Expression.Lambda<Func<Data.Models.Show,bool>>(body, filter.Parameters[0]);
+            var body = Expression.Call(
+                Expression.Constant(opts.GenreIds),
+                typeof(List<int>).GetMethod("Contains", new[] { typeof(int) }),
+                Expression.Property(p, typeof(Data.Models.Show), nameof(Data.Models.Show.GenreId))
+            );
+
+            bodies.Add(body);
         }
-        
-        return filter;
+
+        if (!bodies.Any())
+        {
+            return null;
+        }
+
+        Expression aggregatedBody = bodies.Aggregate(Expression.AndAlso);
+
+        return Expression.Lambda<Func<Data.Models.Show, bool>>(aggregatedBody, p);
     }
 }

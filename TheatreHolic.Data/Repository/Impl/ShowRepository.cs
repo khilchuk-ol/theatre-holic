@@ -14,7 +14,7 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
     {
         return _context.Set<Show>()
             .Include(s => s.Author)
-            .Include(s => s.Genres)
+            .Include(s => s.Genre)
             .Include(s => s.Tickets)
             .ToList();
     }
@@ -24,7 +24,7 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
         return _context.Set<Show>()
             .Where(s => s.Id == id)
             .Include(s => s.Author)
-            .Include(s => s.Genres)
+            .Include(s => s.Genre)
             .Include(s => s.Tickets)
             .FirstOrDefault();
     }
@@ -45,7 +45,7 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
         }
 
         return q.Include(s => s.Author)
-            .Include(s => s.Genres)
+            .Include(s => s.Genre)
             .Include(s => s.Tickets)
             .ToList();
     }
@@ -67,7 +67,7 @@ public class ShowRepository : Repository<int, Show>, IShowRepository
 
         return q
             .Include(s => s.Author)
-            .Include(s => s.Genres)
+            .Include(s => s.Genre)
             .Include(s => s.Tickets)
             .ToList();
     }

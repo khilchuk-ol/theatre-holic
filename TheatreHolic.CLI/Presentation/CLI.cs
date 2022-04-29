@@ -35,18 +35,18 @@ public class CLI : IShowable
     {
         Console.Clear();
         Console.WriteLine("Choose options: \n" +
-                          "b - find shows\n" +
-                          "r - find tickets\n" +
+                          "s - find shows\n" +
+                          "t - find tickets\n" +
                           "e - exit");
         var inp = Console.ReadLine().Trim();
 
         switch (inp.Trim().ToLower())
         {
-            case "b":
+            case "s":
                 FindShows();
                 Menu();
                 break;
-            case "r":
+            case "t":
                 FindTickets();
                 Menu();
                 break;
@@ -73,7 +73,7 @@ public class CLI : IShowable
             case "t":
                 FindShowsByTitle();
                 break;
-            case "n":
+            case "a":
                 FindShowsByAuthor();
                 break;
             case "g":
@@ -109,14 +109,14 @@ public class CLI : IShowable
         else
         {
             Console.WriteLine("\nResult\n");
-            Console.WriteLine($"{"ID",-15} | {"Title",-25} | {"Date",-27} | {"Available tickets amount",-20}");
+            Console.WriteLine($"{"ID",-15} | {"Title",-40} | {"Date",-40} | {"Available tickets amount",-20}");
 
             foreach (var s in res)
             {
                 var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                 Console.WriteLine(
-                    $"{s.Id,-15} | {s.Title,-25} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-27} | {tickets.Count(),-20}");
+                    $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
             }
         }
 
@@ -155,14 +155,14 @@ public class CLI : IShowable
             else
             {
                 Console.WriteLine("\nResult\n");
-                Console.WriteLine($"{"ID",-15} | {"Title",-25} | {"Date",-27} | {"Available tickets amount",-20}");
+                Console.WriteLine($"{"ID",-15} | {"Title",-40} | {"Date",-40} | {"Available tickets amount",-20}");
 
                 foreach (var s in res)
                 {
                     var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                     Console.WriteLine(
-                        $"{s.Id,-15} | {s.Title,-25} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-27} | {tickets.Count(),-20}");
+                        $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
                 }
             }
         }
@@ -202,14 +202,14 @@ public class CLI : IShowable
             else
             {
                 Console.WriteLine("\nResult\n");
-                Console.WriteLine($"{"ID",-15} | {"Title",-25} | {"Date",-27} | {"Available tickets amount",-20}");
+                Console.WriteLine($"{"ID",-15} | {"Title",-40} | {"Date",-40} | {"Available tickets amount",-20}");
 
                 foreach (var s in res)
                 {
                     var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                     Console.WriteLine(
-                        $"{s.Id,-15} | {s.Title,-25} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-27} | {tickets.Count(),-20}");
+                        $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
                 }
             }
         }
@@ -247,7 +247,7 @@ public class CLI : IShowable
 
             foreach (var t in tickets)
             {
-                Console.WriteLine($"{t.Id,-15} | {t.Price:C2,-10} | {t.Row,-10} | {t.Seat,-10}");
+                Console.WriteLine($"{t.Id,-15} | {t.Price.ToString("C", CultureInfo.GetCultureInfo("en-US")),-10} | {t.Row,-10} | {t.Seat,-10}");
             }
 
             Console.Write("\nEnter ticket id to book or buy it: ");
