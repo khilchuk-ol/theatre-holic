@@ -44,7 +44,7 @@ public static class Fixtures
                 Genre = Genres[i],
                 GenreId = i,
                 Title = "Show " + i,
-                Date = DateTime.Now.AddDays(10)
+                Date = DateTime.Now.AddDays(10 * i)
             });
         }
         
