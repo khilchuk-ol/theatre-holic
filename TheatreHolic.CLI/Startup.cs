@@ -5,6 +5,7 @@ using TheatreHolic.CLI.Presentation;
 using TheatreHolic.Data;
 using TheatreHolic.Data.Repository;
 using TheatreHolic.Data.Repository.Impl;
+using TheatreHolic.Data.UnitOfWork;
 using TheatreHolic.Domain.Mapping;
 using TheatreHolic.Domain.Services;
 using TheatreHolic.Domain.Services.Impl;
@@ -29,6 +30,8 @@ public class Startup
         services.AddScoped<IAuthorService, AuthorService>();
         services.AddScoped<IGenreService, GenreService>();
         
+        services.AddScoped<UnitOfWork, Data.UnitOfWork.Impl.UnitOfWork>();
+
         services.AddScoped<IShowable, Presentation.CLI>();
 
         var mapperConfig = new MapperConfiguration(mc =>

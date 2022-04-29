@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using TheatreHolic.Data.Repository;
 
-namespace TheatreHolic.Data;
+namespace TheatreHolic.Data.UnitOfWork.Impl;
 
-public class UnitOfWork : IDisposable
+public class UnitOfWork : Data.UnitOfWork.UnitOfWork, IDisposable
 {
     protected DbContext _context;
 
-    public IShowRepository ShowRepository { get; }
-    public ITicketRepository TicketRepository { get; }
-    public IAuthorRepository AuthorRepository { get; }
-    public IGenreRepository GenreRepository { get; }
+    public override IShowRepository ShowRepository { get; }
+    public override ITicketRepository TicketRepository { get; }
+    public override IAuthorRepository AuthorRepository { get; }
+    public override IGenreRepository GenreRepository { get; }
 
     private bool _isDisposed = false;
 
@@ -38,13 +38,13 @@ public class UnitOfWork : IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
-    public void Save()
+    public override void Save()
     {
         _context.SaveChanges();
     }
