@@ -66,7 +66,7 @@ public class ShowService : IShowService
         var filter = prepareFilter(opts);
         if (filter == null)
         {
-            return _repository.GetPage(offset, amount)
+            return _repository.GetPageWithData(offset, amount)
                 .Select(s => _mapper.Map<Data.Models.Show, Show>(s))
                 .ToList();
         }

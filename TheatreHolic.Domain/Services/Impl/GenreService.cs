@@ -15,16 +15,18 @@ public class GenreService : IGenreService
         _mapper = mapper;
     }
     
-    public IEnumerable<Genre> FindGenres(string name, int offset, int amount)
+    public IEnumerable<Genre> FindGenres(string? name, int offset, int amount)
     {
+        name = name?.Trim();
+
         if (String.IsNullOrEmpty(name))
         {
             return _repository.GetPage(offset, amount)
                 .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
                 .ToList();
         }
-
-        return _repository.Filter(g => g.Name.Contains(name.Trim()), offset, amount)
+        
+        return _repository.Filter(g => g.Name.Contains(name), offset, amount)
             .Select(g => _mapper.Map<Data.Models.Genre, Genre>(g))
             .ToList();
     }

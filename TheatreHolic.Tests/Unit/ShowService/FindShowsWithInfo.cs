@@ -12,7 +12,7 @@ using Xunit;
 
 namespace TheatreHolic.Tests.Unit.ShowService;
 
-public class FindShows
+public class FindShowsWithInfo
 {
     [Fact]
     public void OptionsAreNull_GetAllData()
@@ -22,13 +22,13 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(null, -1, -1);
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(null, -1, -1);
 
         res.Should().BeEquivalentTo(showsDomain);
 
-        Setup.ShowRepository.Setup(s => s.GetPage(2, 2)).Returns(shows.Skip(2).Take(2).ToList());
-        res = showSvc.FindShows(null, 2, 2);
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(2, 2)).Returns(shows.Skip(2).Take(2).ToList());
+        res = showSvc.FindShowsWithInfo(null, 2, 2);
 
         res.Should().BeEquivalentTo(showsDomain.Skip(2).Take(2).ToList());
     }
@@ -41,13 +41,13 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions(), -1, -1);
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions(), -1, -1);
 
         res.Should().BeEquivalentTo(showsDomain);
 
-        Setup.ShowRepository.Setup(s => s.GetPage(2, 2)).Returns(shows.Skip(2).Take(2).ToList());
-        res = showSvc.FindShows(new SearchShowsOptions(), 2, 2);
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(2, 2)).Returns(shows.Skip(2).Take(2).ToList());
+        res = showSvc.FindShowsWithInfo(new SearchShowsOptions(), 2, 2);
 
         res.Should().BeEquivalentTo(showsDomain.Skip(2).Take(2).ToList());
     }
@@ -70,9 +70,9 @@ public class FindShows
         var shows = Fixtures.Shows.Where(s => s.Title.Contains(title)).ToList();
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.Filter(It.Is(
+        Setup.ShowRepository.Setup(s => s.FilterWithData(It.Is(
             (Expression<Func<Data.Models.Show, bool>> filter) => ExpressionEqualityComparer.Instance.Equals(filter, expr)), -1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             Title = title
         }, -1, -1);
@@ -90,8 +90,8 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             Title = title
         }, -1, -1);
@@ -116,9 +116,9 @@ public class FindShows
         var shows = Fixtures.Shows.Where(s => s.Date >= minDate).ToList();
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.Filter(It.Is(
+        Setup.ShowRepository.Setup(s => s.FilterWithData(It.Is(
             (Expression<Func<Data.Models.Show, bool>> filter) => ExpressionEqualityComparer.Instance.Equals(filter, expr)), -1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             MinDateTime = minDate
         }, -1, -1);
@@ -136,8 +136,8 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             MinDateTime = minDate
         }, -1, -1);
@@ -162,9 +162,9 @@ public class FindShows
         var shows = Fixtures.Shows.Where(s => s.Date <= maxDate).ToList();
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.Filter(It.Is(
+        Setup.ShowRepository.Setup(s => s.FilterWithData(It.Is(
             (Expression<Func<Data.Models.Show, bool>> filter) => ExpressionEqualityComparer.Instance.Equals(filter, expr)), -1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             MaxDateTime = maxDate
         }, -1, -1);
@@ -182,8 +182,8 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             MaxDateTime = maxDate
         }, -1, -1);
@@ -209,9 +209,9 @@ public class FindShows
         var shows = Fixtures.Shows.Where(s => authorIds.Contains(s.AuthorId)).ToList();
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.Filter(It.Is(
+        Setup.ShowRepository.Setup(s => s.FilterWithData(It.Is(
             (Expression<Func<Data.Models.Show, bool>> filter) => ExpressionEqualityComparer.Instance.Equals(filter, expr)), -1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             AuthorIds = authorIds
         }, -1, -1);
@@ -229,8 +229,8 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             AuthorIds = authorIds
         }, -1, -1);
@@ -256,9 +256,9 @@ public class FindShows
         var shows = Fixtures.Shows.Where(s => genreIds.Contains(s.GenreId)).ToList();
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.Filter(It.Is(
+        Setup.ShowRepository.Setup(s => s.FilterWithData(It.Is(
             (Expression<Func<Data.Models.Show, bool>> filter) => ExpressionEqualityComparer.Instance.Equals(filter, expr)), -1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             GenreIds = genreIds
         }, -1, -1);
@@ -276,8 +276,8 @@ public class FindShows
         var shows = Fixtures.Shows;
         var showsDomain = shows.Select(s => Setup.Mapper.Map<TheatreHolic.Data.Models.Show, Show>(s)).ToList();
 
-        Setup.ShowRepository.Setup(s => s.GetPage(-1, -1)).Returns(shows);
-        var res = showSvc.FindShows(new SearchShowsOptions()
+        Setup.ShowRepository.Setup(s => s.GetPageWithData(-1, -1)).Returns(shows);
+        var res = showSvc.FindShowsWithInfo(new SearchShowsOptions()
         {
             GenreIds = genreIds
         }, -1, -1);

@@ -7,10 +7,10 @@ namespace TheatreHolic.Tests.Unit;
 
 public static class Fixtures
 {
-    public static List<Author> Authors { get; } = new List<Author>();
-    public static List<Genre> Genres { get; } = new List<Genre>();
-    public static List<Show> Shows { get; } = new List<Show>();
-    public static List<Ticket> Tickets { get; } = new List<Ticket>();
+    public static List<Author> Authors { get; } = new();
+    public static List<Genre> Genres { get; } = new();
+    public static List<Show> Shows { get; } = new();
+    public static List<Ticket> Tickets { get; } = new();
 
     static Fixtures()
     {

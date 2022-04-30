@@ -16,16 +16,18 @@ public class AuthorService : IAuthorService
     }
 
 
-    public IEnumerable<Author> FindAuthors(string name, int offset, int amount)
+    public IEnumerable<Author> FindAuthors(string? name, int offset, int amount)
     {
+        name = name?.Trim();
+
         if (String.IsNullOrEmpty(name))
         {
             return _repository.GetPage(offset, amount)
                 .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
                 .ToList();
         }
-
-        return _repository.Filter(a => a.Name.Contains(name.Trim()), offset, amount)
+        
+        return _repository.Filter(a => a.Name.Contains(name), offset, amount)
             .Select(a => _mapper.Map<Data.Models.Author, Author>(a))
             .ToList();
     }
