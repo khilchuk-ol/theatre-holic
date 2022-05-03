@@ -39,8 +39,8 @@ public class MappingProfile : Profile
                     }
                     : null));
 
-        CreateMap<Domain.Ticket, Dto.Ticket>();
-        CreateMap<Dto.Ticket, Domain.Ticket>();
+        CreateMap<Domain.Ticket, Dto.Ticket.Ticket>();
+        CreateMap<Dto.Ticket.Ticket, Domain.Ticket>();
 
         CreateMap<Domain.Author, Dto.Author>();
         CreateMap<Dto.Author, Domain.Author>();
@@ -48,7 +48,13 @@ public class MappingProfile : Profile
         CreateMap<Domain.Genre, Dto.Genre>();
         CreateMap<Dto.Genre, Domain.Genre>();
 
-        CreateMap<Domain.TicketState, Dto.TicketState>();
-        CreateMap<Dto.TicketState, Domain.TicketState>();
+        CreateMap<Domain.TicketState, Dto.Ticket.TicketState>();
+        CreateMap<Dto.Ticket.TicketState, Domain.TicketState>();
+        CreateMap<Dto.Ticket.CreateTicketDto, Domain.Ticket>()
+            .ForMember(s => s.Show,
+                cd => cd.MapFrom(map => new Show
+                {
+                    Id = map.ShowId
+                }));
     }
 }

@@ -1,4 +1,4 @@
-namespace TheatreHolic.WebApi.Dtos;
+namespace TheatreHolic.WebApi.Dtos.Ticket;
 
 public enum TicketState
 {

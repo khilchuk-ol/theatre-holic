@@ -1,20 +1,28 @@
-using TheatreHolic.Domain.Models;
+using System.Text.Json.Serialization;
 
-namespace TheatreHolic.WebApi.Dtos;
+namespace TheatreHolic.WebApi.Dtos.Ticket;
 
 public class Ticket
 {
+    [JsonPropertyName("id")]
     public int Id { get; set; }
     
+    [JsonPropertyName("price")]
     public double Price { get; set; }
     
+    [JsonPropertyName("row")]
     public int Row { get; set; }
     
+    [JsonPropertyName("seat")]
     public int Seat { get; set; }
     
+    [JsonPropertyName("state")]
     public TicketState State { get; set; }
+
+    [JsonPropertyName("state_name")] 
+    public string StateName => State.ToString();
     
-    //public WebApi.Dtos.Show? Show { get; set; }
+    [JsonPropertyName("show_id")] 
     public int ShowId { get; set; }
     
     public Ticket() {}
