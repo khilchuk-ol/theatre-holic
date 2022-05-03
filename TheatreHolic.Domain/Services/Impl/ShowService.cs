@@ -30,7 +30,8 @@ public class ShowService : IShowService
         
         try
         {
-            _repository.Create(_mapper.Map<Show, Data.Models.Show>(item));
+            var model = _mapper.Map<Show, Data.Models.Show>(item);
+            _repository.Create(model);
         }
         catch (InvalidForeignKeyException e)
         {

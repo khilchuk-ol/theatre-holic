@@ -1,5 +1,7 @@
 using System.Linq;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
 using TheatreHolic.Domain.Models;
 using TheatreHolic.Domain.Services;
 using Xunit;
@@ -27,6 +29,7 @@ public class GetAvailableTickets
     
     private ITicketService GetService()
     {
-        return new Domain.Services.Impl.TicketService(Setup.TicketRepository.Object, Setup.Mapper);
+        return new Domain.Services.Impl.TicketService(Setup.TicketRepository.Object, Setup.Mapper,
+            new Mock<ILogger<Domain.Services.Impl.TicketService>>().Object);
     }
 }

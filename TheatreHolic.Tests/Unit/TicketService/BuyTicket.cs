@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using TheatreHolic.Data.Models;
 using TheatreHolic.Domain.Services;
@@ -31,6 +32,7 @@ public class BuyTicket
     
     private ITicketService GetService()
     {
-        return new Domain.Services.Impl.TicketService(Setup.TicketRepository.Object, Setup.Mapper);
+        return new Domain.Services.Impl.TicketService(Setup.TicketRepository.Object, Setup.Mapper,
+            new Mock<ILogger<Domain.Services.Impl.TicketService>>().Object);
     }
 }

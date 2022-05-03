@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
+using TheatreHolic.Data.Exceptions;
 using TheatreHolic.Data.Repository;
 using TheatreHolic.Domain.Models;
 using TicketState = TheatreHolic.Data.Models.TicketState;
@@ -9,21 +11,41 @@ public class TicketService : ITicketService
 {
     private ITicketRepository _repository;
     private IMapper _mapper;
+    private readonly ILogger<TicketService> _logger;
 
-    public TicketService(ITicketRepository repository, IMapper mapper)
+    public TicketService(ITicketRepository repository, IMapper mapper, ILogger<TicketService> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _logger = logger;
     }
 
-    public void CreateTicket(Ticket item)
+    public bool CreateTicket(Ticket item)
     {
-        _repository.Create(_mapper.Map<Ticket, Data.Models.Ticket>(item));
+        if (item.Price <= 0 || item.Row <= 0 || item.Seat <= 0)
+        {
+            return false;
+        }
+
+        item.State = Models.TicketState.Available;
+        
+        try
+        {
+            _repository.Create(_mapper.Map<Ticket, Data.Models.Ticket>(item));
+        }
+        catch (InvalidForeignKeyException e)
+        {
+            _logger.Log(LogLevel.Warning, e.ToString());
+            return false;
+        }
+
+        return true;
+        
     }
 
-    public void DeleteTicket(int id)
+    public bool DeleteTicket(int id)
     {
-        _repository.Remove(id);
+        return _repository.Remove(id);
     }
 
     public bool BookTicket(int ticketId)

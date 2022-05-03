@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TheatreHolic.Data.Exceptions;
 using TheatreHolic.Data.Models;
 
 namespace TheatreHolic.Data.Repository.Impl;
@@ -8,6 +9,32 @@ public class TicketRepository : Repository<int, Ticket>, ITicketRepository
 {
     public TicketRepository(DbContext context) : base(context)
     {
+    }
+    
+    public override void Create(Ticket item)
+    {
+        if (_context.Set<Show>().Find(item.ShowId) == null)
+        {
+            throw new InvalidForeignKeyException("could not create ticket, show with such id does not exist",
+                $"show id = {item.ShowId}");
+        }
+
+        item.Show = null;
+
+        base.Create(item);
+    }
+    
+    public override void Update(Ticket item)
+    {
+        if (_context.Set<Show>().Find(item.ShowId) == null)
+        {
+            throw new InvalidForeignKeyException("could not create ticket, show with such id does not exist",
+                $"show id = {item.ShowId}");
+        }
+
+        item.Show = null;
+
+        base.Update(item);
     }
 
     public IEnumerable<Ticket> FindAllWithData()
