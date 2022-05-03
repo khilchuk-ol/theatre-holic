@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
+using TheatreHolic.Data.Exceptions;
 using TheatreHolic.Data.Repository;
 using TheatreHolic.Domain.Models;
 using TheatreHolic.Domain.Services.Utils;
@@ -10,26 +12,85 @@ public class ShowService : IShowService
 {
     private readonly IShowRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ILogger<ShowService> _logger;
 
-    public ShowService(IShowRepository repository, IMapper mapper)
+    public ShowService(IShowRepository repository, IMapper mapper, ILogger<ShowService> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _logger = logger;
     }
 
-    public void CreateShow(Show item)
+    public bool CreateShow(Show item)
     {
-        _repository.Create(_mapper.Map<Show, Data.Models.Show>(item));
+        if (item.Date <= DateTime.Now)
+        {
+            return false;
+        }
+        
+        try
+        {
+            _repository.Create(_mapper.Map<Show, Data.Models.Show>(item));
+        }
+        catch (InvalidForeignKeyException e)
+        {
+            _logger.Log(LogLevel.Warning, e.ToString());
+            return false;
+        }
+
+        return true;
     }
 
-    public void DeleteShow(int id)
+    public bool DeleteShow(int id)
     {
-        _repository.Remove(id);
+        return _repository.Remove(id);
     }
 
-    public void UpdateShow(Show item)
+    public bool UpdateShow(Show item)
     {
-        _repository.Update(_mapper.Map<Show, Data.Models.Show>(item));
+        var toPatch = _repository.Find(item.Id);
+        if (toPatch == null) return false;
+
+        if (item.Title != null)
+        {
+            if (string.IsNullOrWhiteSpace(item.Title))
+            {
+                return false;
+            }
+            
+            toPatch.Title = item.Title.Trim();
+        }
+
+        if (item.Date != null)
+        {
+            if (item.Date <= DateTime.Now)
+            {
+                return false;
+            }
+            toPatch.Date = item.Date.Value;
+        }
+        
+        if (item.Author != null)
+        {
+            toPatch.AuthorId = item.Author.Id;
+        }
+        
+        if (item.Genre != null)
+        {
+            toPatch.GenreId = item.Genre.Id;
+        }
+        
+        try
+        {
+            _repository.Update(toPatch);
+        }
+        catch (InvalidForeignKeyException e)
+        {
+            _logger.Log(LogLevel.Warning, e.ToString());
+            return false;
+        }
+
+        return true;
     }
 
     public IEnumerable<Show> FindShows(SearchShowsOptions? opts, int offset = 0, int amount = 0)

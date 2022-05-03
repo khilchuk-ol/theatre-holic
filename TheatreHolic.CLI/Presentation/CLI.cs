@@ -116,7 +116,7 @@ public class CLI : IShowable
                 var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                 Console.WriteLine(
-                    $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
+                    $"{s.Id,-15} | {s.Title,-40} | {s.Date?.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
             }
         }
 
@@ -162,7 +162,7 @@ public class CLI : IShowable
                     var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                     Console.WriteLine(
-                        $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
+                        $"{s.Id,-15} | {s.Title,-40} | {s.Date?.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
                 }
             }
         }
@@ -209,7 +209,7 @@ public class CLI : IShowable
                     var tickets = _ticketSvc.GetAvailableTickets(s.Id);
 
                     Console.WriteLine(
-                        $"{s.Id,-15} | {s.Title,-40} | {s.Date.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
+                        $"{s.Id,-15} | {s.Title,-40} | {s.Date?.ToString("f", CultureInfo.GetCultureInfo("en-US")),-40} | {tickets.Count(),-20}");
                 }
             }
         }

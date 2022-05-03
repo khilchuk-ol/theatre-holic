@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
 using TheatreHolic.Domain.Models;
 using TheatreHolic.Domain.Services;
 using Xunit;
@@ -51,6 +53,7 @@ public class GetShowsByIds
     
     private IShowService GetService()
     {
-        return new Domain.Services.Impl.ShowService(Setup.ShowRepository.Object, Setup.Mapper);
+        return new Domain.Services.Impl.ShowService(Setup.ShowRepository.Object, Setup.Mapper,
+            new Mock<ILogger<Domain.Services.Impl.ShowService>>().Object);
     }
 }

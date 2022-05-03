@@ -4,7 +4,7 @@ public class Show
 {
     public int Id { get; set; }
 
-    public string Title { get; set; } = "";
+    public string? Title { get; set; } = "";
     
     public Author? Author { get; set; }
     
@@ -12,7 +12,7 @@ public class Show
     
     public List<Ticket>? Tickets { get; set; }
     
-    public DateTime Date { get; set; }
+    public DateTime? Date { get; set; }
     
     public Show() {}
 

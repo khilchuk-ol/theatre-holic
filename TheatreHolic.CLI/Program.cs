@@ -1,17 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TheatreHolic.CLI.Presentation;
-using TheatreHolic.Data;
-using TheatreHolic.Data.Models;
-using TheatreHolic.Data.Repository;
-using TheatreHolic.Data.Repository.Impl;
-using TheatreHolic.Domain.Mapping;
-using TheatreHolic.Domain.Services;
-using TheatreHolic.Domain.Services.Impl;
-using TicketState = TheatreHolic.Domain.Models.TicketState;
 
 namespace TheatreHolic.CLI;
 

@@ -12,7 +12,7 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
         _context = context;
     }
 
-    public void Create(TEntity item)
+    public virtual void Create(TEntity item)
     {
         _context.Set<TEntity>().Add(item);
         _context.SaveChanges();
@@ -62,19 +62,20 @@ public class Repository<TIdentity, TEntity> : IRepository<TIdentity, TEntity> wh
         return q.ToList();
     }
 
-    public void Remove(TIdentity id)
+    public bool Remove(TIdentity id)
     {
         var item = _context.Set<TEntity>().Find(id);
         if (item == null)
         {
-            return;
+            return false;
         }
         
         _context.Entry(item).State = EntityState.Deleted;
         _context.SaveChanges();
+        return true;
     }
 
-    public void Update(TEntity item)
+    public virtual void Update(TEntity item)
     {
         _context.Set<TEntity>().Attach(item);
         _context.Entry(item).State = EntityState.Modified;

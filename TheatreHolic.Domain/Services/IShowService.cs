@@ -5,9 +5,9 @@ namespace TheatreHolic.Domain.Services;
 
 public interface IShowService
 {
-    void CreateShow(Show item);
-    void DeleteShow(int id);
-    void UpdateShow(Show item);
+    bool CreateShow(Show item);
+    bool DeleteShow(int id);
+    bool UpdateShow(Show item);
     
     IEnumerable<Show> FindShows(SearchShowsOptions? opts, int offset, int amount);
     IEnumerable<Show> FindShowsWithInfo(SearchShowsOptions? opts, int offset, int amount);
