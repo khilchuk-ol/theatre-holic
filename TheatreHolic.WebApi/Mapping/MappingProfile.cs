@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheatreHolic.Data.Models;
 
 namespace TheatreHolic.WebApi.Mapping;
@@ -41,20 +42,25 @@ public class MappingProfile : Profile
 
         CreateMap<Domain.Ticket, Dto.Ticket.Ticket>();
         CreateMap<Dto.Ticket.Ticket, Domain.Ticket>();
-
-        CreateMap<Domain.Author, Dto.Author>();
-        CreateMap<Dto.Author, Domain.Author>();
-
-        CreateMap<Domain.Genre, Dto.Genre>();
-        CreateMap<Dto.Genre, Domain.Genre>();
-
-        CreateMap<Domain.TicketState, Dto.Ticket.TicketState>();
-        CreateMap<Dto.Ticket.TicketState, Domain.TicketState>();
         CreateMap<Dto.Ticket.CreateTicketDto, Domain.Ticket>()
             .ForMember(s => s.Show,
                 cd => cd.MapFrom(map => new Show
                 {
                     Id = map.ShowId
                 }));
+
+        CreateMap<Domain.Author, Dto.Author.Author>();
+        CreateMap<Dto.Author.Author, Domain.Author>();
+        CreateMap<Dto.Author.CreateAuthorDto, Domain.Author>();
+        CreateMap<Dto.Author.UpdateAuthorDto, Domain.Author>();
+
+        CreateMap<Domain.Genre, Dto.Genre.Genre>();
+        CreateMap<Dto.Genre.Genre, Domain.Genre>();
+        CreateMap<Dto.Genre.CreateGenreDto, Domain.Genre>();
+        CreateMap<Dto.Genre.UpdateGenreDto, Domain.Genre>();
+
+        CreateMap<Domain.TicketState, Dto.Ticket.TicketState>();
+        CreateMap<Dto.Ticket.TicketState, Domain.TicketState>();
+        
     }
 }

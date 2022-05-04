@@ -1,7 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TheatreHolic.Data.Models;
 using TheatreHolic.Domain.Services;
+using TheatreHolic.WebApi.Dtos.Author;
+using Author = TheatreHolic.Data.Models.Author;
 
 namespace TheatreHolic.WebApi.Controllers;
 
@@ -49,5 +50,30 @@ public class AuthorsController
         return !author.Any()
             ? Results.NotFound()
             : Results.Ok(author.Select(a => _mapper.Map<Domain.Models.Author, Author>(a)).ToList());
+    }
+    
+    [HttpPost]
+    [Route("/theatreholic/api/authors/")]
+    public IResult CreateAuthor([FromBody] CreateAuthorDto dto)
+    {
+        var author = _mapper.Map<CreateAuthorDto, Domain.Models.Author>(dto);
+
+        return _service.CreateAuthor(author) ? Results.Ok() : Results.BadRequest();
+    }
+
+    [HttpPatch]
+    [Route("/theatreholic/api/authors/")]
+    public IResult UpdateAuthor([FromBody] UpdateAuthorDto dto)
+    {
+        var author = _mapper.Map<UpdateAuthorDto, Domain.Models.Author>(dto);
+
+        return _service.UpdateAuthor(author) ? Results.Ok() : Results.BadRequest();
+    }
+
+    [HttpDelete]
+    [Route("/theatreholic/api/authors/{id:int}")]
+    public IResult DeleteAuthor(int id)
+    {
+        return _service.DeleteAuthor(id) ? Results.Ok() : Results.BadRequest();
     }
 }

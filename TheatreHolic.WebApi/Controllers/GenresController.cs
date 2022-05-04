@@ -1,7 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TheatreHolic.Data.Models;
 using TheatreHolic.Domain.Services;
+using TheatreHolic.WebApi.Dtos.Genre;
+using Genre = TheatreHolic.Data.Models.Genre;
 
 namespace TheatreHolic.WebApi.Controllers;
 
@@ -49,5 +50,30 @@ public class GenresController
         return !genres.Any()
             ? Results.NotFound()
             : Results.Ok(genres.Select(g => _mapper.Map<Domain.Models.Genre, Genre>(g)).ToList());
+    }
+    
+    [HttpPost]
+    [Route("/theatreholic/api/genres/")]
+    public IResult CreateGenre([FromBody] CreateGenreDto dto)
+    {
+        var genre = _mapper.Map<CreateGenreDto, Domain.Models.Genre>(dto);
+
+        return _service.CreateGenre(genre) ? Results.Ok() : Results.BadRequest();
+    }
+
+    [HttpPatch]
+    [Route("/theatreholic/api/genres/")]
+    public IResult UpdateGenre([FromBody] UpdateGenreDto dto)
+    {
+        var genre = _mapper.Map<UpdateGenreDto, Domain.Models.Genre>(dto);
+
+        return _service.UpdateGenre(genre) ? Results.Ok() : Results.BadRequest();
+    }
+
+    [HttpDelete]
+    [Route("/theatreholic/api/genres/{id:int}")]
+    public IResult DeleteGenre(int id)
+    {
+        return _service.DeleteGenre(id) ? Results.Ok() : Results.BadRequest();
     }
 }

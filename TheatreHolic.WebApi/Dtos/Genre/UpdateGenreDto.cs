@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace TheatreHolic.WebApi.Dtos;
+namespace TheatreHolic.WebApi.Dtos.Genre;
 
-public class Genre
+public class UpdateGenreDto
 {
+    [Required]
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
@@ -13,11 +14,4 @@ public class Genre
     [StringLength(25, ErrorMessage = "Name length can't be more than 25 nad less than 3.", MinimumLength = 3)]
     [JsonPropertyName("name")]
     public string Name { get; set; }
-    
-    public Genre() {}
-
-    public Genre(string name)
-    {
-        Name = name;
-    }
 }

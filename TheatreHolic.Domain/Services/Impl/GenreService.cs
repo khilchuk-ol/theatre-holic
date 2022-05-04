@@ -15,6 +15,40 @@ public class GenreService : IGenreService
         _mapper = mapper;
     }
     
+    public bool CreateGenre(Genre item)
+    {
+        if (string.IsNullOrWhiteSpace(item.Name))
+        {
+            return false;
+        }
+
+        item.Name = item.Name.Trim();
+        _repository.Create(_mapper.Map<Genre, Data.Models.Genre>(item));
+
+        return true;
+    }
+
+    public bool DeleteGenre(int id)
+    {
+        return _repository.Remove(id);
+    }
+
+    public bool UpdateGenre(Genre item)
+    {
+        if (string.IsNullOrWhiteSpace(item.Name))
+        {
+            return false;
+        }
+        
+        var toPatch = _repository.Find(item.Id);
+        if (toPatch == null) return false;
+
+        toPatch.Name = item.Name.Trim();
+        _repository.Update(toPatch);
+
+        return true;
+    }
+    
     public IEnumerable<Genre> FindGenres(string? name, int offset, int amount)
     {
         name = name?.Trim();

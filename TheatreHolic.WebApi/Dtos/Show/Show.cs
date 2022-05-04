@@ -11,10 +11,10 @@ public class Show
     public string Title { get; set; } = "";
     
     [JsonPropertyName("author")]
-    public Author? Author { get; set; }
+    public Author.Author? Author { get; set; }
 
     [JsonPropertyName("genre")]
-    public Genre? Genre { get; set; }
+    public Genre.Genre? Genre { get; set; }
 
     [JsonPropertyName("dt")]
     public DateTime Date { get; set; }
