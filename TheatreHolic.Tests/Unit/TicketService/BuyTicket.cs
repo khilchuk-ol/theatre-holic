@@ -19,10 +19,30 @@ public class BuyTicket
     }
     
     [Fact]
-    public void TicketExists_Success()
+    public void TicketStateIsNotValid_ReturnFalse()
     {
         var ticketSvc = GetService();
-        var ticket = Fixtures.Tickets[0];
+        var ticket = new Ticket()
+        {
+            Id = 10,
+            State = TicketState.Sold
+        };
+
+        Setup.TicketRepository.Setup(repo => repo.Find(ticket.Id)).Returns(ticket);
+        Assert.False(ticketSvc.BuyTicket(ticket.Id));
+    }
+    
+    [Theory]
+    [InlineData(TicketState.Booked)]
+    [InlineData(TicketState.Available)]
+    public void TicketExists_ValidState_Success(TicketState state)
+    {
+        var ticketSvc = GetService();
+        var ticket = new Ticket()
+        {
+            Id = 10,
+            State = state
+        };
 
         Setup.TicketRepository.Setup(repo => repo.Find(ticket.Id)).Returns(ticket);
         Setup.TicketRepository.Setup(repo => repo.Update(It.Is((Ticket t) => t.State == TicketState.Sold)));

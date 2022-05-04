@@ -13,6 +13,9 @@ public class TicketService : ITicketService
     private IMapper _mapper;
     private readonly ILogger<TicketService> _logger;
 
+    private readonly List<TicketState> BOOKABLE_STATES = new() {TicketState.Available};
+    private readonly List<TicketState> BUYABLE_STATES = new() {TicketState.Available, TicketState.Booked};
+
     public TicketService(ITicketRepository repository, IMapper mapper, ILogger<TicketService> logger)
     {
         _repository = repository;
@@ -51,7 +54,7 @@ public class TicketService : ITicketService
     public bool BookTicket(int ticketId)
     {
         var ticket = _repository.Find(ticketId);
-        if (ticket == null)
+        if (ticket == null || !BOOKABLE_STATES.Contains(ticket.State))
         {
             return false;
         }
@@ -64,7 +67,7 @@ public class TicketService : ITicketService
     public bool BuyTicket(int ticketId)
     {
         var ticket = _repository.Find(ticketId);
-        if (ticket == null)
+        if (ticket == null || !BUYABLE_STATES.Contains(ticket.State))
         {
             return false;
         }

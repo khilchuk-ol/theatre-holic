@@ -18,11 +18,31 @@ public class BookTicket
         Assert.False(ticketSvc.BookTicket(id));
     }
     
+    [Theory]
+    [InlineData(TicketState.Booked)]
+    [InlineData(TicketState.Sold)]
+    public void TicketStateIsNotValid_ReturnFalse(TicketState state)
+    {
+        var ticketSvc = GetService();
+        var ticket = new Ticket()
+        {
+            Id = 10,
+            State = state
+        };
+
+        Setup.TicketRepository.Setup(repo => repo.Find(ticket.Id)).Returns(ticket);
+        Assert.False(ticketSvc.BookTicket(ticket.Id));
+    }
+    
     [Fact]
     public void TicketExists_Success()
     {
         var ticketSvc = GetService();
-        var ticket = Fixtures.Tickets[0];
+        var ticket = new Ticket()
+        {
+            Id = 10,
+            State = TicketState.Available
+        };
 
         Setup.TicketRepository.Setup(repo => repo.Find(ticket.Id)).Returns(ticket);
         Setup.TicketRepository.Setup(repo => repo.Update(It.Is((Ticket t) => t.State == TicketState.Booked)));

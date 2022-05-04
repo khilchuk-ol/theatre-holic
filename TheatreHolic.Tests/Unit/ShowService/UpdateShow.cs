@@ -2,9 +2,10 @@ using System;
 using Microsoft.Extensions.Logging;
 using Moq;
 using TheatreHolic.Data.Exceptions;
-using TheatreHolic.Domain.Models;
+using TheatreHolic.Data.Models;
 using TheatreHolic.Domain.Services;
 using Xunit;
+using Show = TheatreHolic.Domain.Models.Show;
 
 namespace TheatreHolic.Tests.Unit.ShowService;
 
@@ -17,9 +18,11 @@ public class UpdateShow
         var show = new Data.Models.Show();
         show.Id = 10;
         
-        show.Tickets = null;
-        show.Author = null;
-        show.Genre = null;
+        show.Author = new Author { Id = 12 };
+        show.AuthorId = 12;
+        
+        show.Genre = new Genre { Id = 12};
+        show.GenreId = 12;
 
         show.Title = "new title";
         show.Date = DateTime.Now.AddDays(3);
